@@ -43,30 +43,18 @@ function sortearAmigo() {
     resultado.innerHTML = ""; // Limpiar resultados anteriores
 
     let amigosSorteo = [...amigos]; // Copia del array original
-    let asignaciones = {};
-
-    while (amigosSorteo.length > 1) {
-        let amigo1 = amigosSorteo.shift(); // Extrae el primer amigo
-        let posibles = amigosSorteo.filter(a => a !== amigo1); // Evitar que se asigne a sí mismo
-
-        let randomIndex = Math.floor(Math.random() * posibles.length);
-        let amigo2 = posibles[randomIndex];
-
-        asignaciones[amigo1] = amigo2;
-
-        // Remover amigo2 del array
-        amigosSorteo.splice(randomIndex, 1);
+    
+    // Desordenar aleatoriamente la lista usando Fisher-Yates
+    for (let i = amigosSorteo.length - 1; i > 0; i--) {
+        let j = Math.floor(Math.random() * (i + 1));
+        [amigosSorteo[i], amigosSorteo[j]] = [amigosSorteo[j], amigosSorteo[i]];
     }
 
-    // Asignar el último amigo al primero para cerrar el ciclo
-    let ultimoAmigo = amigosSorteo[0];
-    let primerAmigo = Object.keys(asignaciones)[0];
-    asignaciones[ultimoAmigo] = primerAmigo;
+    // Obtener el último amigo sorteado
+    let ultimoAmigo = amigosSorteo[amigosSorteo.length - 1];
 
-    // Mostrar resultado en la lista
-    for (let [key, value] of Object.entries(asignaciones)) {
-        let item = document.createElement("li");
-        item.textContent = `${key} → ${value}`;
-        resultado.appendChild(item);
-    }
+    // Mostrar solo el mensaje final
+    let mensajeFinal = document.createElement("p");
+    mensajeFinal.textContent = `🎁 El amigo secreto es: ${ultimoAmigo}`;
+    resultado.appendChild(mensajeFinal);
 }
