@@ -33,7 +33,6 @@ function agregarAmigo() {
     // Limpiar input
     inputAmigo.value = "";
 }
-
 function sortearAmigo() {
     if (amigos.length < 2) {
         alert("⚠️ Debe haber al menos 2 personas para sortear.");
@@ -46,14 +45,9 @@ function sortearAmigo() {
     let amigosSorteo = [...amigos]; // Copia del array original
     let asignaciones = {};
 
-    while (amigosSorteo.length > 0) {
+    while (amigosSorteo.length > 1) {
         let amigo1 = amigosSorteo.shift(); // Extrae el primer amigo
         let posibles = amigosSorteo.filter(a => a !== amigo1); // Evitar que se asigne a sí mismo
-
-        if (posibles.length === 0) {
-            alert("❌ No se pudo realizar el sorteo correctamente. Inténtalo de nuevo.");
-            return;
-        }
 
         let randomIndex = Math.floor(Math.random() * posibles.length);
         let amigo2 = posibles[randomIndex];
@@ -63,6 +57,11 @@ function sortearAmigo() {
         // Remover amigo2 del array
         amigosSorteo.splice(randomIndex, 1);
     }
+
+    // Asignar el último amigo al primero para cerrar el ciclo
+    let ultimoAmigo = amigosSorteo[0];
+    let primerAmigo = Object.keys(asignaciones)[0];
+    asignaciones[ultimoAmigo] = primerAmigo;
 
     // Mostrar resultado en la lista
     for (let [key, value] of Object.entries(asignaciones)) {
